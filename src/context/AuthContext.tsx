@@ -1,13 +1,14 @@
 import React, {
   createContext,
   PropsWithChildren,
+  RefObject,
   useContext,
-  useState,
+  useRef,
 } from "react";
 import { User } from "../domain/entities/User";
 
 interface AuthContextType {
-  user: User | null;
+  user: RefObject<User | null>;
   login: (user: User) => void;
   logout: () => void;
 }
@@ -15,13 +16,13 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const userRef = useRef<User | null>(null);
 
-  const login = (user: User) => setUser(user);
-  const logout = () => setUser(null);
+  const login = (user: User) => (userRef.current = user);
+  const logout = () => (userRef.current = null);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user: userRef, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

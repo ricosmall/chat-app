@@ -22,13 +22,13 @@ export const useChat = () => {
 
   const handleSendMessage = useCallback(
     async (content: string) => {
-      addUserMessage(content);
-
-      if (!user) {
+      if (!user.current) {
         setPendingMessages((prev) => [...prev, content]);
         setIsLoginModalOpen(true);
         return;
       }
+
+      addUserMessage(content);
 
       await sendMessage(content, (botMessage: Message) => {
         setMessages((prevMessages) => {
