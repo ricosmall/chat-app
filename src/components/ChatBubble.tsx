@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Message } from "../domain/entities/Message";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 
