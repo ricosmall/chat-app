@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 interface Props {
   onSend: (message: string) => void;
 }
 
 export const ChatInput: React.FC<Props> = ({ onSend }) => {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
       onSend(input);
-      setInput("");
+      setInput('');
     }
   };
 

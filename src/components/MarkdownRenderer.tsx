@@ -1,7 +1,7 @@
-import React from "react";
-import markdownit from "markdown-it";
-import hljs from "highlight.js";
-import "highlight.js/styles/github.css";
+import React from 'react';
+import markdownit from 'markdown-it';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github.css';
 
 interface Props {
   content: string;
@@ -14,14 +14,12 @@ const md: any = markdownit({
         return (
           '<pre><code class="hljs">' +
           hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
-          "</code></pre>"
+          '</code></pre>'
         );
       } catch (__) {}
     }
 
-    return (
-      '<pre><code class="hljs">' + md.utils.escapeHtml(str) + "</code></pre>"
-    );
+    return '<pre><code class="hljs">' + md.utils.escapeHtml(str) + '</code></pre>';
   },
 });
 

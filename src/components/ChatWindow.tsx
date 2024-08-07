@@ -1,17 +1,19 @@
-import React, { useEffect, useRef } from "react";
-import { useChat } from "../hooks/useChat";
-import { ChatBubble } from "./ChatBubble";
-import { ChatInput } from "./ChatInput";
-import { LoginModal } from "./LoginModal";
+import React, { useEffect, useRef } from 'react';
+import { GetMessageUseCase } from '../domain/usecases/GetMessageUseCase';
+import { SendMessageUseCase } from '../domain/usecases/SendMessageUseCase';
+import { ChatBubble } from './ChatBubble';
+import { ChatInput } from './ChatInput';
+import { useChat } from '../presentation/hooks/useChat';
+import { ReceiveBotMessageUseCase } from '../domain/usecases/ReceiveBotMessageUseCase';
 
-export const ChatWindow: React.FC = () => {
-  const {
-    messages,
-    handleLogin,
-    handleSendMessage,
-    isLoginModalOpen,
-    handleCloseLoginModal,
-  } = useChat();
+interface Props {
+  sendMessageUseCase: SendMessageUseCase;
+  receiveBotMessageUseCase: ReceiveBotMessageUseCase;
+  getMessageUseCase: GetMessageUseCase;
+}
+
+export const ChatWindow: React.FC<Props> = ({ sendMessageUseCase, receiveBotMessageUseCase, getMessageUseCase }) => {
+  const { messages, handleSendMessage } = useChat(sendMessageUseCase, receiveBotMessageUseCase, getMessageUseCase);
 
   const messageEndRef = useRef<HTMLDivElement>(null);
 
@@ -22,19 +24,20 @@ export const ChatWindow: React.FC = () => {
   useEffect(scrollToBottom, [messages]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '20px' }}>
         {messages.map((message) => (
-          <ChatBubble key={message.id} message={message} />
+          <ChatBubble
+            key={message.id}
+            message={message}
+          />
         ))}
-        <div ref={messageEndRef} style={{ height: 100 }} />
+        <div
+          ref={messageEndRef}
+          style={{ height: 100 }}
+        />
       </div>
       <ChatInput onSend={handleSendMessage} />
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={handleCloseLoginModal}
-        onLogin={handleLogin}
-      />
     </div>
   );
 };
